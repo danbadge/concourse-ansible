@@ -1,0 +1,16 @@
+# {{ansible_managed}}
+
+description "Concourse Web"
+author "Concourse Team"
+
+start on runlevel [2345]
+stop on shutdown
+
+setuid concourse
+exec /usr/bin/concourse web \
+  --basic-auth-username myuser \
+  --basic-auth-password mypass \
+  --session-signing-key /opt/concourse/keys/session_signing_key.private \
+  --tsa-host-key /opt/concourse/keys/host_key.private \
+  --tsa-authorized-keys /opt/concourse/keys/worker_key.public \
+  --external-url {{ concourse_url }}

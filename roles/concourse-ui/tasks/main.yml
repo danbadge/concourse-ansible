@@ -1,0 +1,8 @@
+---
+- name: add concourse role
+  group: name=concourse state=present
+- user:  name=concourse home=/opt/concourse group=concourse
+- name: concourse ui systemd service file
+  template: src=concourse-ui.conf.j2 dest=/etc/init/concourse-ui.conf
+  notify:
+    - restart concourse-ui

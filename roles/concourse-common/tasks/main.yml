@@ -1,0 +1,22 @@
+---
+- name: take binary from cache
+  stat: path=/vagrant/.cache/concourse_linux_amd64
+  register: concourse_binary
+- name: download concourse binary
+  get_url: url={{ concourse_download_url }} dest=/usr/bin/concourse
+  when: concourse_binary.stat.islnk is not defined
+- name: move binary
+  copy: src=.cache/concourse_linux_amd64 dest=/usr/bin/concourse
+  when: concourse_binary.stat.islnk is defined
+- name: make concourse executable
+  file: path=/usr/bin/concourse owner=root mode=0555
+- file: path=/opt/concourse/keys state=directory mode=0755 recurse=yes
+- name: copy keys
+  copy: src=secrets/keys/concourse/{{ item }} dest=/opt/concourse/keys
+  with_items:
+    - host_key.private
+    - host_key.public
+    - session_signing_key.private
+    - session_signing_key.public
+    - worker_key.private
+    - worker_key.public

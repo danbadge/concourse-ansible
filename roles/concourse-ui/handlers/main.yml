@@ -1,0 +1,3 @@
+---
+- name: restart concourse-ui
+  service: name=concourse-ui state=restarted enabled=yes

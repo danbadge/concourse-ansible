@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: yes
+  vars_files:
+    - "vars/common.yml"
+  roles:
+    - concourse-common
+
+- hosts: concourse-web
+  become: yes
+  roles:
+    - postgres
+    - concourse-ui
+    - haproxy
+
+- hosts: concourse-worker
+  become: yes
+  roles:
+    - concourse-worker

@@ -1,0 +1,13 @@
+# {{ansible_managed}}
+
+description "Concourse Worker"
+author "Concourse Team"
+
+start on runlevel [2345]
+stop on shutdown
+
+exec /usr/bin/concourse worker \
+    --work-dir /tmp/concourse \
+    --tsa-host {{ concourse_ui_host }} \
+    --tsa-public-key /opt/concourse/keys/host_key.public \
+    --tsa-worker-private-key /opt/concourse/keys/worker_key.private

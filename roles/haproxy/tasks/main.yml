@@ -1,0 +1,36 @@
+---
+- name: haproxy 1.6 prerequisite
+  apt: name=software-properties-common state=present
+
+- name: add stable haproxy 1.6 repository
+  apt_repository: repo='ppa:vbernat/haproxy-1.6' state=present
+
+- name: install haproxy
+  apt: name=haproxy state=present update_cache=yes
+  tags: haproxy
+
+- name: Add the config file
+  copy: src=haproxy.cfg dest=/etc/haproxy/haproxy.cfg
+  notify:
+    - restart haproxy
+
+- name: Enable init script
+  copy: src=haproxy_init dest=/etc/default/haproxy
+  notify:
+    - restart haproxy
+
+- name: Make sure haproxy is enabled and running
+  service: name=haproxy state=started enabled=true
+
+- name: create ssl dir
+  file: path=/ssl state=directory
+
+- name: copy pem to ssl dir
+  copy: src=secrets/certificates/domain.pem dest=/ssl/domain.pem owner=haproxy group=haproxy mode=0640
+  notify:
+    - restart haproxy
+
+- name: Add the config file
+  copy: src=49-haproxy.conf dest=/etc/rsyslog.d/49-haproxy.conf
+  notify:
+    - restart rsyslog
