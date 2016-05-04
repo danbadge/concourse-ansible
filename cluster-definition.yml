@@ -1,0 +1,16 @@
+cluster:
+  - name: concourse.local
+    role: concourse-web
+    ip: 192.168.77.22
+    cpus: 2
+    memory: 1048
+  - name: concourse-worker-01
+    role: concourse-worker
+    ip: 192.168.77.23
+    cpus: 2
+    memory: 1024
+  - name: concourse-worker-02
+    role: concourse-worker
+    ip: 192.168.77.24
+    cpus: 2
+    memory: 1024

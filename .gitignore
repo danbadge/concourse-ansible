@@ -1,0 +1,8 @@
+Gemfile.lock
+.vagrant/*
+.DS_Store
+inventory/aws_inventory
+.gitignore/*
+.cache/*
+.python-version
+secrets/*
